@@ -12,6 +12,7 @@
 #include <memory>
 #include <ranges>
 #include <algorithm>
+#include <iterator>
 
 
 // Example function to benchmark
@@ -31,7 +32,7 @@ static void bmDoSetup(const benchmark::State& state) {
 }
 
 // BM teardown
-static void bmDoTeardown(const benchmark::State& state) {
+static void bmDoTeardown(const benchmark::State& /*state*/) {
   in_vec.release();
 }
 

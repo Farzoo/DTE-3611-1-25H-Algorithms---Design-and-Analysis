@@ -34,7 +34,7 @@ namespace dte3611::predef::benchmarking::string_match::fixtures
     using Base::Base;
     ~HelloWorldF() override {}
 
-    void SetUp(const benchmark::State& st) final
+    void SetUp(const benchmark::State& /*st*/) final
     {
       m_string   = "Hello world !_!";
       m_sequence = "!_!";

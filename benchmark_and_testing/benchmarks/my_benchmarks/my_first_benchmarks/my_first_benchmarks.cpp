@@ -12,6 +12,7 @@
 #include <memory>
 #include <ranges>
 #include <algorithm>
+#include <iterator>
 
 // Example function to benchmark
 std::vector<int> myCopyFunction( std::vector<int> const& in_vector ) {
