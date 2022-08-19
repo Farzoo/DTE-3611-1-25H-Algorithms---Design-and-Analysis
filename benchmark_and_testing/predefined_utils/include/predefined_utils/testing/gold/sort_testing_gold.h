@@ -75,7 +75,7 @@ namespace dte3611::predef::testing::sort
           Container c;
           c.reserve(no_elements);
           for (auto e = 0ul; e <= no_elements / 2; ++e) c.emplace_back(e);
-          for (auto e = size_t(no_elements / 2 - 1); e > 0; --e)
+          for (auto e = Element(no_elements / 2 - 1); e > 0; --e)
             c.emplace_back(e);
           c.emplace_back(0);
           return c;
@@ -128,7 +128,7 @@ namespace dte3611::predef::testing::sort
       ~CollectionTemplate() = default;
 
       template <typename Comp_T = std::less<typename Generator::Element>>
-      void init(size_t no_elements, Comp_T comp = Comp_T())
+      void init(size_t no_elements, Comp_T /*comp*/ = Comp_T())
       {
         m_gold = m_data = m_gen(no_elements);
         std::sort(std::begin(m_gold), std::end(m_gold));

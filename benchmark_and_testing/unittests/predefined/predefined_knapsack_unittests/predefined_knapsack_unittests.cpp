@@ -13,13 +13,7 @@
 #include <algorithm>
 #include <compare>
 
-// Qualify predefined fixtures
-//using namespace dte3611::predef::testing::sort::fixtures;
-struct KnapsackFixture01 : ::testing::Test {
-
-  using ::testing::Test::Test;
-  ~KnapsackFixture01() override {}
-
+namespace detail {
   struct Item {
     std::string name;
     int         value;
@@ -27,7 +21,18 @@ struct KnapsackFixture01 : ::testing::Test {
 
     std::weak_ordering operator <=> ( Item const& other ) const = default;
   };
-  using Items    = std::vector<Item>;
+}
+
+using namespace detail;
+
+// Qualify predefined fixtures
+//using namespace dte3611::predef::testing::sort::fixtures;
+struct KnapsackFixture01 : ::testing::Test {
+
+  using ::testing::Test::Test;
+  ~KnapsackFixture01() override {}
+
+  using Items    = std::vector<detail::Item>;
   using Capacity = int;
   using K01Gold  = std::vector<bool>;
   using K01GoldV = int;
@@ -75,7 +80,7 @@ TEST_F(KnapsackFixture01, firstTestSetFoundByAGoogleSearch)
     std::vector<bool>     my_01knapsack;
     [[maybe_unused]] auto result = alg::knapsack_01(
       items, std::back_inserter(my_01knapsack), capacity,
-      &KnapsackFixture01::Item::value, &KnapsackFixture01::Item::weight);
+      &detail::Item::value, &detail::Item::weight);
 
     std::reverse(my_01knapsack.begin(), my_01knapsack.end());
 
