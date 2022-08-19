@@ -35,6 +35,12 @@ option(DTE3611_ENABLE_BENCHMARKS "Enable : Benchmarks" OFF)
 if(DTE3611_ENABLE_BENCHMARKS)
   SETUP_BENCHMARK_ENV()
 
+  SET(MSVC_COMPILE_OPTIONS
+    # REQUIRED ON
+    /W4 /permissive-
+    # REQUIRED ON
+  )
+
   ## Guard for Google benchmark
   if(benchmark_FOUND)
 
