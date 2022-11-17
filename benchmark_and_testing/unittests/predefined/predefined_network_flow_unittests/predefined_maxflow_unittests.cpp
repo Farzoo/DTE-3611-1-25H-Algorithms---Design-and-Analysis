@@ -28,3 +28,11 @@ TEST_F(FordFulkersonDemoDAG2F, FordFulkersonMaxFlowDemo2)
   auto gold_flow = gold->maxFlowSTGold();
   EXPECT_EQ(max_flow, gold_flow);
 }
+
+TEST_F(MinCostMaxFlowDAG, FordFulkersonMinCostFlowDag)
+{
+  auto max_flow = alg::maxFlow(gold->graph(), gold->s(), gold->t());
+  auto gold_flow = gold->maxFlowSTGold();
+  EXPECT_EQ(max_flow, gold_flow);
+}
+

@@ -27,6 +27,9 @@ namespace dte3611::predef::testing::flow::fixtures
   using FordFulkersonDemoDAGF = GoldGraphTestF<gold::FordFulkersonDemoDAG>;
   using FordFulkersonDemoDAG2F = GoldGraphTestF<gold::FordFulkersonDemoDAG2>;
 
+  // Min-cost max-flow testing fixtures
+  using MinCostMaxFlowDAG = GoldGraphTestF<gold::MinCostMaxFlowDAG>;
+
 }   // namespace dte3611::predef::testing::graph::fixtures
 
 #endif   // DTE3611_PREDEF_TESTING_FLOW_FIXTURES_H
