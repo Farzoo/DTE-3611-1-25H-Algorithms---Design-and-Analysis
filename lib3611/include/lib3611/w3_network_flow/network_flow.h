@@ -36,6 +36,10 @@ namespace dte3611::np::algorithms
   template <typename Graph_T>
   void cycleCanceling([[maybe_unused]] Graph_T& graph)
   {
+    // 1. Find a feasible flow f   (Ford-Fulkerson maxflow in a related graph)
+    // 2. REPEAT (until no augmenting cycles)
+    //   2.1 Find an augmenting cycle C (Bellman-Ford in residual graph to detect negative cost cycles)
+    //   2.2 Augment flow along C
   }
 
 }   // namespace dte3611::graph::algorithms
