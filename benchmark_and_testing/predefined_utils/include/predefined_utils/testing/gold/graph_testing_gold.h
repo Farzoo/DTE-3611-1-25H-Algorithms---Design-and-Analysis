@@ -385,6 +385,123 @@ namespace dte3611::predef::testing::graph
       }
     };
 
+    class DAG_Neg_One
+        : public detail::GoldGraphTemplate<detail::types::BidirectionalGraph> {
+      using Base = detail::GoldGraphTemplate<detail::types::BidirectionalGraph>;
+
+      VD S;
+      VD T;
+      VD V;
+      VD W;
+
+     public:
+      DAG_Neg_One() {
+        // clang-format off
+          /*!
+           *   S  -->  V
+           *
+           *   |  \    |
+           *   V   \   V
+           *        >
+           *   T  <--  W
+           */
+        // clang-format on
+
+        S = boost::add_vertex(VP{.name = "S"}, m_graph);  // 0
+        T = boost::add_vertex(VP{.name = "T"}, m_graph);  // 1
+        V = boost::add_vertex(VP{.name = "V"}, m_graph);  // 2
+        W = boost::add_vertex(VP{.name = "W"}, m_graph);  // 3
+
+        // bgl has "implicit" alphanumeric child-ordering
+        boost::add_edge(S, T, EP{.distance = 2.}, m_graph);
+        boost::add_edge(S, V, EP{.distance = 6.}, m_graph);
+        boost::add_edge(S, W, EP{.distance = 4.}, m_graph);
+        boost::add_edge(V, W, EP{.distance = -8.}, m_graph);
+        boost::add_edge(W, T, EP{.distance = 3.}, m_graph);
+      }
+      ~DAG_Neg_One() override {}
+
+      VD const& s() const { return S; }
+      VD const& t() const { return T; }
+      VD const& v() const { return V; }
+      VD const& w() const { return W; }
+
+      VDVecVector shortestPathsSTGold() const { return {{V, W, T}}; }
+    };
+
+    class DAG_Neg_Two
+        : public detail::GoldGraphTemplate<detail::types::BidirectionalGraph> {
+      using Base = detail::GoldGraphTemplate<detail::types::BidirectionalGraph>;
+
+      VD S;
+      VD T;
+      VD A;
+      VD B;
+      VD C;
+      VD D;
+      VD E;
+      VD F;
+
+     public:
+      DAG_Neg_Two() {
+        // clang-format off
+          /*!
+           *
+           * Graph from 06DPII p.32
+           *
+           *           A         -->       B
+           *       ^
+           *      /    |               ^
+           *           v    \         /
+           *   S             v
+           *      \
+           *        >  C   ->   D            \
+           *   |              ^               v
+           *   v   ^     \   /
+           *      /       v          \
+           *              E            v
+           *        >          \
+           *       /             >
+           *   F         ->                     T
+           *
+           *
+           */
+        // clang-format on
+
+        S = boost::add_vertex(VP{.name = "S"}, m_graph);  // 0
+        T = boost::add_vertex(VP{.name = "T"}, m_graph);  // 1
+        A = boost::add_vertex(VP{.name = "A"}, m_graph);  // 2
+        B = boost::add_vertex(VP{.name = "B"}, m_graph);  // 3
+        C = boost::add_vertex(VP{.name = "C"}, m_graph);  // 2
+        D = boost::add_vertex(VP{.name = "D"}, m_graph);  // 3
+        E = boost::add_vertex(VP{.name = "E"}, m_graph);  // 2
+        F = boost::add_vertex(VP{.name = "F"}, m_graph);  // 3
+
+        // bgl has "implicit" alphanumeric child-ordering
+        boost::add_edge(S, A, EP{.distance = 5.}, m_graph);
+        boost::add_edge(S, C, EP{.distance = 8.}, m_graph);
+        boost::add_edge(S, F, EP{.distance = 9.}, m_graph);
+        boost::add_edge(A, B, EP{.distance = -2.}, m_graph);
+        boost::add_edge(A, C, EP{.distance = 4.}, m_graph);
+        boost::add_edge(A, D, EP{.distance = 12.}, m_graph);
+        boost::add_edge(B, T, EP{.distance = 17.}, m_graph);
+        boost::add_edge(C, D, EP{.distance = 7.}, m_graph);
+        boost::add_edge(C, E, EP{.distance = -1.}, m_graph);
+        boost::add_edge(D, T, EP{.distance = 11.}, m_graph);
+        boost::add_edge(E, D, EP{.distance = -6.}, m_graph);
+        boost::add_edge(E, T, EP{.distance = 13.}, m_graph);
+        boost::add_edge(F, C, EP{.distance = 5.}, m_graph);
+        boost::add_edge(F, E, EP{.distance = -3.}, m_graph);
+        boost::add_edge(F, T, EP{.distance = 10.}, m_graph);
+      }
+      ~DAG_Neg_Two() override {}
+
+      VD const& s() const { return S; }
+      VD const& t() const { return T; }
+
+      VDVecVector shortestPathsSTGold() const { return {{F, E, D, T}}; }
+    };
+
   }   // namespace gold
 
 }   // namespace dte3611::predef::testing::graph

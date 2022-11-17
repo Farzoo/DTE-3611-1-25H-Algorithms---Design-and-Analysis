@@ -30,12 +30,24 @@ namespace dte3611::predef::concepts::graph
   };
 
   template <typename Op_T, typename Graph_T>
-  concept ShortestPathHeuristicOperator
-    = requires(Op_T                                op,      // O type existance
-               Graph_T const&                      graph,   // G type existance
-               typename Graph_T::vertex_descriptor v        // VD type existance
-    )
-  {
+  concept EdgeCapacityOperator =
+      requires(Op_T op,                             // O type existance
+               Graph_T const& graph,                // G type existance
+               typename Graph_T::edge_descriptor e  // ED type existance
+      ) {
+    // clang-format off
+ //    {op(e, graph)}  // Capacity operator existance
+ //    -> std::convertible_to<decltype(op(e, graph)), std::floating_point>;   // Capacity return type
+       requires std::convertible_to<decltype(op(e, graph)), float>;
+    // clang-format on
+  };
+
+  template <typename Op_T, typename Graph_T>
+  concept ShortestPathHeuristicOperator =
+      requires(Op_T op,                               // O type existance
+               Graph_T const& graph,                  // G type existance
+               typename Graph_T::vertex_descriptor v  // VD type existance
+      ) {
     // clang-format off
     {op(v, v, graph)}   // 'Heuristic of two vertices' operator existance
     -> std::floating_point;   // Heuristic return type

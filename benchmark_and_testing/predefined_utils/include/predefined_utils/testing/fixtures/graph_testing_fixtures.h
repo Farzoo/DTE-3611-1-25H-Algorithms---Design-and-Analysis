@@ -32,6 +32,11 @@ namespace dte3611::predef::testing::graph::fixtures
   using DAGTwoF   = GoldGraphTestF<gold::DAGTwo>;
   using DAGThreeF = GoldGraphTestF<gold::DAGThree>;
 
+  // Graphs with negative cycles
+  using DAG_Neg_OneF = GoldGraphTestF<gold::DAG_Neg_One>;
+  using DAG_Neg_TwoF = GoldGraphTestF<gold::DAG_Neg_Two>;
+
+
 }   // namespace dte3611::predef::testing::graph::fixtures
 
 #endif   // DTE3611_PREDEF_TESTING_GRAPH_GOLD_H

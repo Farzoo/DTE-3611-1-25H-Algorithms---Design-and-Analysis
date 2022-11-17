@@ -10,7 +10,9 @@ set( LIB_TO_TEST
   dte3611::lib3611 )
 
 set( UNITTESTS
-  predefined_maxflow_unittests )
+  predefined_maxflow_unittests
+  predefined_bellman_ford_sp_unittests )
+
 
 set( OTHER_LINK_TARGETS
   dte3611::predefined_utils )
