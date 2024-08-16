@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.15)
 cmake_policy(SET CMP0092 NEW)
 
 # Project name
-project(dte3611_2023_YOUR_NAME_HERE VERSION 0.1 LANGUAGES CXX)
+project(dte3611_2024_YOUR_NAME_HERE VERSION 0.1 LANGUAGES CXX)
 
 # Ease of setup protection on Wintendo OSes
 if(MSVC AND NOT VCPKG_TOOLCHAIN)
