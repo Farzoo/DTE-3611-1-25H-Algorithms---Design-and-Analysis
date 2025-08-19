@@ -10,7 +10,7 @@ if(DTE3611_ENABLE_UNITTESTS)
   SETUP_UNITTEST_ENV()
 
   ## Guard for GTEST
-  if(GTest_FOUND)
+  if(TARGET GTest::GTest)
 
     # Unittest template
     add_subdirectory(unittests/templates/unittest_template)
@@ -27,35 +27,21 @@ if(DTE3611_ENABLE_UNITTESTS)
     # My Unittests
     add_subdirectory(unittests/my_tests/my_sort_tests)
 
-  endif(GTest_FOUND)
+  endif(TARGET GTest::GTest)
 endif(DTE3611_ENABLE_UNITTESTS)
 
 ## Guard for BENCHMARK
 option(DTE3611_ENABLE_BENCHMARKS "Enable : Benchmarks" OFF)
 if(DTE3611_ENABLE_BENCHMARKS)
-  SETUP_BENCHMARK_ENV()
+    SETUP_BENCHMARK_ENV()
 
-  SET(MSVC_COMPILE_OPTIONS
-    # REQUIRED ON
-    /W4 /permissive-
-    # REQUIRED ON
-  )
-
-  ## Guard for Google benchmark
-  if(benchmark_FOUND)
-
-    # Benchmark template
-    add_subdirectory(benchmarks/templates/benchmark_template)
-
-    # Predefined benchmarks
-    add_subdirectory(benchmarks/predefined/predefined_sort_benchmarks)
-    add_subdirectory(benchmarks/predefined/predefined_string_match_benchmarks)
-    add_subdirectory(benchmarks/predefined/predefined_graph_traversal_benchmarks)
-    add_subdirectory(benchmarks/predefined/predefined_graph_path_finding_benchmarks)
-
-    # My Unittests
-    add_subdirectory(benchmarks/my_benchmarks/my_first_benchmarks)
-
-  endif(benchmark_FOUND)
+    if(TARGET benchmark::benchmark)
+        add_subdirectory(benchmarks/templates/benchmark_template template)
+        add_subdirectory(benchmarks/predefined/predefined_sort_benchmarks sort)
+        add_subdirectory(benchmarks/predefined/predefined_string_match_benchmarks string_match)
+        add_subdirectory(benchmarks/predefined/predefined_graph_traversal_benchmarks graph_traversal)
+        add_subdirectory(benchmarks/predefined/predefined_graph_path_finding_benchmarks graph_path_finding)
+        add_subdirectory(benchmarks/my_benchmarks/my_first_benchmarks my_first)
+    endif()
 
 endif(DTE3611_ENABLE_BENCHMARKS)
