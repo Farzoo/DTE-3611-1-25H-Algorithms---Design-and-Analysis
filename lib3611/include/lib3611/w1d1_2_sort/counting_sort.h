@@ -26,11 +26,54 @@ namespace dte3611::sort::algorithms
       // Return value
       constexpr Iterator_T
       // Call-operator signature
-      operator()(Iterator_T /*first*/, Sentinel_T /*last*/,
-                 Compare_T /*comp*/ = {}, Projection_T /*proj*/ = {}) const
+      operator()(Iterator_T first, Sentinel_T last,
+                 Compare_T comp = {}, Projection_T proj = {}) const
       {
-        return {};
-        //        static_assert(false, "Complete the code");
+        (void)comp; // comparator not used
+
+        Iterator_T last_it = std::ranges::next(first, last);
+        if (first == last_it) return last_it;
+
+        using Elem = std::iter_value_t<Iterator_T>;
+        using Key  = std::remove_cvref_t<std::invoke_result_t<Projection_T, decltype(*first)>>;
+
+        static_assert(std::is_integral_v<Key>,
+                      "counting_sort requires an integral key after projection");
+
+        // Find key range [min_k, max_k]
+        Key min_k = std::invoke(proj, *first);
+        Key max_k = min_k;
+        for (Iterator_T it = first + 1; it != last_it; ++it) {
+          Key k = std::invoke(proj, *it);
+          if (k < min_k) min_k = k;
+          if (k > max_k) max_k = k;
+        }
+
+        // Allocate counts
+        const auto span = static_cast<std::make_unsigned_t<Key>>(max_k - min_k) + 1u;
+        std::vector<std::size_t> counts(static_cast<std::size_t>(span), 0);
+
+        // Histogram
+        for (Iterator_T it = first; it != last_it; ++it) {
+          Key k = std::invoke(proj, *it);
+          counts[static_cast<std::size_t>(static_cast<std::make_unsigned_t<Key>>(k - min_k))] += 1;
+        }
+
+        // Prefix sums -> end positions
+        for (std::size_t i = 1; i < counts.size(); ++i) counts[i] += counts[i - 1];
+
+        // Stable placement to buffer
+        std::vector<Elem> buffer(static_cast<std::size_t>(last_it - first));
+        for (Iterator_T it = last_it; it != first; ) {
+          --it;
+          Key k = std::invoke(proj, *it);
+          const auto idx = static_cast<std::size_t>(static_cast<std::make_unsigned_t<Key>>(k - min_k));
+          std::size_t pos = --counts[idx];
+          buffer[pos] = *it;
+        }
+
+        std::move(buffer.begin(), buffer.end(), first);
+        return last_it;
       }
 
       /******************

@@ -5,6 +5,7 @@
 #include <iterator>
 #include <ranges>
 #include <algorithm>
+#include <functional>
 
 namespace dte3611::sort::algorithms
 {
@@ -28,11 +29,26 @@ namespace dte3611::sort::algorithms
       // Return value
       constexpr Iterator_T
       // Call-operator signature
-      operator()(Iterator_T /*first*/, Sentinel_T /*last*/,
-                 Compare_T /*comp*/ = {}, Projection_T /*proj*/ = {}) const
+      operator()(Iterator_T first, Sentinel_T last,
+                 Compare_T comp = {}, Projection_T proj = {}) const
       {
-          return {};
-        //      static_assert( false, "Complete the code" );
+        // for each element, lower_bound in the sorted prefix, then rotate.
+        Iterator_T last_it = std::ranges::next(first, last);
+        if (first == last_it) return last_it;
+
+        for (Iterator_T it = first + 1; it != last_it; ++it) {
+
+          auto key = std::invoke(proj, *it);
+
+          // Find insertion position in [first, it)
+          Iterator_T pos =
+              std::ranges::lower_bound(std::ranges::subrange(first, it),
+                                       key, comp, proj);
+
+          std::rotate(pos, it, it + 1);
+        }
+
+        return last_it;
       }
 
 

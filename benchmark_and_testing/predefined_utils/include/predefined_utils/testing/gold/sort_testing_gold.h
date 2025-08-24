@@ -111,7 +111,7 @@ namespace dte3611::predef::testing::sort
             rd());   // Standard mersenne_twister_engine seeded with rd()
           std::uniform_int_distribution<> distrib(0, 1);
           for (auto e = 0ul; e < no_elements; ++e) c.emplace_back(distrib(gen));
-          return std::move(c);
+          return c;
         }
       };
 
