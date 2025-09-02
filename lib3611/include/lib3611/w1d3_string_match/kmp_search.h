@@ -4,6 +4,7 @@
 // stl
 #include <iterator>
 #include <algorithm>
+#include <functional>
 
 namespace dte3611::string_match::algorithms
 {
@@ -34,14 +35,55 @@ namespace dte3611::string_match::algorithms
       constexpr Iterator_T
 
       // Call-operator signature
-      operator()(Iterator_T /*first*/, Sentinel_T last,
-                 S_Iterator_T /*s_first*/, S_Sentinel_T /*s_last*/,
-                 BinaryPredicate_T /*pred*/ = {}, Projection_T /*proj*/ = {},
-                 S_Projection_T /*s_proj*/ = {}) const
+      operator()(Iterator_T first, Sentinel_T last,
+                 S_Iterator_T s_first, S_Sentinel_T s_last,
+                 BinaryPredicate_T pred = {}, Projection_T proj = {},
+                 S_Projection_T s_proj = {}) const
       {
-        // If no match return last
-        return last;
-        //      static_assert( false, "Complete the code" );
+        // Empty pattern matches at first
+        if (s_first == s_last) return first;
+
+        // Materialize projected pattern
+        using PatKey = std::remove_cvref_t<std::invoke_result_t<S_Projection_T, decltype(*s_first)>>;
+        std::vector<PatKey> pat;
+        for (auto it = s_first; it != s_last; ++it) pat.push_back(std::invoke(s_proj, *it));
+        const std::size_t m = pat.size();
+        if (m == 0) return first;
+
+        // Build LPS
+        std::vector<std::size_t> lps(m, 0);
+        for (std::size_t i = 1, len = 0; i < m; ) {
+          if (std::invoke(pred, pat[i], pat[len])) {
+            lps[i++] = ++len;
+          } else if (len) {
+            len = lps[len - 1];
+          } else {
+            lps[i++] = 0;
+          }
+        }
+
+        // KMP search start tracking
+        Iterator_T start = first;
+        std::size_t j = 0;
+
+        for (Iterator_T it = first; it != last; ++it) {
+          auto hv = std::invoke(proj, *it);
+
+          while (j > 0 && !std::invoke(pred, hv, pat[j])) {
+            std::size_t old = j;
+            j = lps[j - 1];
+            for (std::size_t k = 0; k < old - j; ++k) ++start;
+          }
+
+          if (std::invoke(pred, hv, pat[j])) {
+            ++j;
+            if (j == m) return start;
+          } else {
+            // j == 0 mismatch
+            ++start;
+          }
+        }
+        return std::ranges::next(first, last); // last
       }
 
       /******************

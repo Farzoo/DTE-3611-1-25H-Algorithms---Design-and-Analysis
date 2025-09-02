@@ -4,6 +4,7 @@
 // stl
 #include <iterator>
 #include <algorithm>
+#include <functional>
 
 namespace dte3611::string_match::algorithms
 {
@@ -35,14 +36,27 @@ namespace dte3611::string_match::algorithms
       constexpr Iterator_T
 
       // Call-operator signature
-      operator()(Iterator_T /*first*/, Sentinel_T last,
-                 S_Iterator_T /*s_first*/, S_Sentinel_T /*s_last*/,
-                 BinaryPredicate_T /*pred*/ = {}, Projection_T /*proj*/ = {},
-                 S_Projection_T /*s_proj*/ = {}) const
+      operator()(Iterator_T first, Sentinel_T last,
+                 S_Iterator_T s_first, S_Sentinel_T s_last,
+                 BinaryPredicate_T pred = {}, Projection_T proj = {},
+                 S_Projection_T s_proj = {}) const
       {
-        // If no match is found, return last
-        return last;
-        //      static_assert( false, "Complete the code" );
+        if (s_first == s_last) return first;
+
+        for (Iterator_T i = first; i != last; ++i) {
+          Iterator_T it = i;
+          S_Iterator_T sj = s_first;
+
+          for (;;) {
+            if (sj == s_last) return i; // full match
+            if (it == last)  return last; // no room left
+            if (!std::invoke(pred,
+                             std::invoke(proj, *it),
+                             std::invoke(s_proj, *sj))) break;
+            ++it; ++sj;
+          }
+        }
+        return last; // no match
       }
 
 
