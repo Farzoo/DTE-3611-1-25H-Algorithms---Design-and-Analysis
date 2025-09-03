@@ -21,7 +21,7 @@ namespace alg = dte3611::graph::algorithms;
 BENCHMARK_DEFINE_F(BenchDagOneF, breadthFirstSearch)
 (benchmark::State& st)
 {
-  for (auto const& _ : st)
+  for ([[maybe_unused]] auto const& _ : st)
     [[maybe_unused]] auto const tree
       = alg::breadthFirstSearch(m_graph->graph(), m_graph->a());
 }
@@ -29,7 +29,7 @@ BENCHMARK_DEFINE_F(BenchDagOneF, breadthFirstSearch)
 BENCHMARK_DEFINE_F(BenchDagOneF, depthFirstSearch)
 (benchmark::State& st)
 {
-  for (auto const& _ : st)
+  for ([[maybe_unused]] auto const& _ : st)
     [[maybe_unused]] auto const tree
       = alg::depthFirstSearch(m_graph->graph(), m_graph->a());
 }
