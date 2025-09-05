@@ -23,6 +23,10 @@ namespace dte3611::predef::testing::graph::fixtures
     void TearDown() final { gold.release(); }
   };
 
+  inline auto distance_op = [](auto const& e, auto const& g) {
+    return g[e].distance;
+  };
+
   // Special purpose fixtures
   using SingleNodeDAGF = GoldGraphTestF<gold::SingleNodeDAG>;
   using TreeDAGF       = GoldGraphTestF<gold::TreeDAG>;
