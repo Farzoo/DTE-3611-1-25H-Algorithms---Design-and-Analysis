@@ -4,6 +4,7 @@
 // stl
 #include <iterator>
 #include <algorithm>
+#include <functional>
 
 namespace dte3611::sort::algorithms
 {

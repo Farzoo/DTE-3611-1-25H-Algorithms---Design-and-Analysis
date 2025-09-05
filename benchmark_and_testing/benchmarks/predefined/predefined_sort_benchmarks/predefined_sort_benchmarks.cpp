@@ -24,63 +24,63 @@ namespace alg = dte3611::sort::algorithms;
 BENCHMARK_DEFINE_F(SortedIntColF, stlSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) std::sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) std::sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(SortedIntColF, countingSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(SortedIntColF, binarySort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(SortedIntColF, radixSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
 }
 
 
 BENCHMARK_DEFINE_F(SortedIntColF, AndAlxSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
 }
 
 // Define benchmark fixtures for sorting of a reverse sorted collection
 BENCHMARK_DEFINE_F(ReverseIntColF, stlSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) std::sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) std::sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(ReverseIntColF, countingSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(ReverseIntColF, binarySort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(ReverseIntColF, radixSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(ReverseIntColF, AndAlxSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
 }
 
 
@@ -88,31 +88,31 @@ BENCHMARK_DEFINE_F(ReverseIntColF, AndAlxSort)
 BENCHMARK_DEFINE_F(OrganpipeIntColF, stlSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) std::sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) std::sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(OrganpipeIntColF, countingSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(OrganpipeIntColF, binarySort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(OrganpipeIntColF, radixSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(OrganpipeIntColF, AndAlxSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
 }
 
 // Define benchmark fixtures for sorting of a sorted and rotated (by one index)
@@ -120,31 +120,31 @@ BENCHMARK_DEFINE_F(OrganpipeIntColF, AndAlxSort)
 BENCHMARK_DEFINE_F(RotatedIntColF, stlSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) std::sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) std::sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(RotatedIntColF, countingSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(RotatedIntColF, binarySort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(RotatedIntColF, radixSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(RotatedIntColF, AndAlxSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
 }
 
 // Define benchmark fixtures for sorting of a sorted and random collection of 0s
@@ -152,31 +152,31 @@ BENCHMARK_DEFINE_F(RotatedIntColF, AndAlxSort)
 BENCHMARK_DEFINE_F(Random01IntColF, stlSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) std::sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) std::sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(Random01IntColF, countingSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::counting_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(Random01IntColF, binarySort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::binary_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(Random01IntColF, radixSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::radix_sort(m_data.begin(), m_data.end());
 }
 
 BENCHMARK_DEFINE_F(Random01IntColF, AndAlxSort)
 (benchmark::State& st)
 {
-  for (auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
+  for ([[maybe_unused]] auto const& _ : st) alg::custom_aa_sort(m_data.begin(), m_data.end());
 }
 
 

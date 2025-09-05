@@ -26,7 +26,7 @@ const auto unit_heuristic_fn
 BENCHMARK_DEFINE_F(BenchDagOneF, dijkstraShortestPaths)
 (benchmark::State& st)
 {
-  for (auto const& _ : st)
+  for ([[maybe_unused]] auto const& _ : st)
     [[maybe_unused]] auto paths = alg::dijkstraShortestPaths(
       m_graph->graph(), m_graph->a(), m_graph->e());
 }
@@ -34,7 +34,7 @@ BENCHMARK_DEFINE_F(BenchDagOneF, dijkstraShortestPaths)
 BENCHMARK_DEFINE_F(BenchDagOneF, aStarSearch)
 (benchmark::State& st)
 {
-  for (auto const& _ : st)
+  for ([[maybe_unused]] auto const& _ : st)
     [[maybe_unused]] auto paths = alg::aStarSearch(
       m_graph->graph(), m_graph->a(), m_graph->e(), unit_heuristic_fn);
 }

@@ -20,7 +20,7 @@ namespace alg = dte3611::string_match::algorithms;
 BENCHMARK_DEFINE_F(HelloWorldF, stlSearch)
 (benchmark::State& st)
 {
-  for (auto const& _ : st)
+  for ([[maybe_unused]] auto const& _ : st)
     std::search(m_string.begin(), m_string.end(), m_sequence.begin(),
                 m_sequence.end());
 }
@@ -28,7 +28,7 @@ BENCHMARK_DEFINE_F(HelloWorldF, stlSearch)
 BENCHMARK_DEFINE_F(HelloWorldF, naiveSearch)
 (benchmark::State& st)
 {
-  for (auto const & _ : st)
+  for ([[maybe_unused]] auto const & _ : st)
     alg::naive_search(m_string.begin(), m_string.end(), m_sequence.begin(),
                       m_sequence.end());
 }
