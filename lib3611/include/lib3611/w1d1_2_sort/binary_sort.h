@@ -32,20 +32,26 @@ namespace dte3611::sort::algorithms
       operator()(Iterator_T first, Sentinel_T last,
                  Compare_T comp = {}, Projection_T proj = {}) const
       {
-        // for each element, lower_bound in the sorted prefix, then rotate.
         Iterator_T last_it = std::ranges::next(first, last);
         if (first == last_it) return last_it;
 
-        for (Iterator_T it = first + 1; it != last_it; ++it) {
+        using Elem = std::iter_value_t<Iterator_T>;
 
-          auto key = std::invoke(proj, *it);
+        auto projected_comp = [&](Elem const& a, Elem const& b) {
+          return std::invoke(comp,
+                             std::invoke(proj, a),
+                             std::invoke(proj, b));
+        };
 
-          // Find insertion position in [first, it)
-          Iterator_T pos =
-              std::ranges::lower_bound(std::ranges::subrange(first, it),
-                                       key, comp, proj);
+        std::multiset<Elem, decltype(projected_comp)> bst(projected_comp);
 
-          std::rotate(pos, it, it + 1);
+        for (Iterator_T it = first; it != last_it; ++it) {
+          bst.insert(*it);
+        }
+
+        Iterator_T out = first;
+        for (auto const& elem : bst) {
+          *out++ = elem;
         }
 
         return last_it;
