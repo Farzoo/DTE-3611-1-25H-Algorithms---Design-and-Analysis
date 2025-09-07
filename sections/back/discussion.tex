@@ -1,0 +1,10 @@
+\FloatBarrier
+\section{Discussion}
+
+The experimental results presented in this study validate theoretical complexity predictions across all algorithm families examined. Linear-time sorting algorithms (counting sort, radix sort) demonstrate clear advantages over comparison-based alternatives when applicable to bounded-range integer inputs. Binary sort, despite achieving asymptotically optimal $O(n \log n)$ complexity, suffers from substantial constant-factor overhead attributable to dynamic memory allocation and suboptimal cache utilisation patterns inherent to pointer-based tree structures.
+
+The unified Dijkstra/A* implementation demonstrates that careful abstraction design enables code reuse without performance degradation. By parameterising the priority function, both algorithms share identical core logic while preserving their distinct characteristics.
+
+\textbf{Limitations.} Several constraints affect the present study. Graph benchmarks employed a minimal test instance (5 vertices), precluding meaningful validation of asymptotic complexity claims. String matching measurements fell below instrumentation resolution thresholds, yielding inconclusive timing data.
+
+\textbf{Future work.} Subsequent investigations will extend this analysis to NP-complete problems, examining dynamic programming solutions for subset-sum and knapsack problems. Network flow algorithms, including Ford-Fulkerson and minimum-cost maximum-flow variants, constitute additional directions for exploration.

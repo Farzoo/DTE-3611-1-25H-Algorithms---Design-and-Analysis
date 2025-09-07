@@ -1,0 +1,7 @@
+\subsection{Shortest Path Algorithms}
+
+\textbf{Dijkstra's algorithm}~\cite{article:dijkstra:1959} maintains tentative distances and iteratively extracts minimum-distance vertices from a priority queue. The fundamental invariant states that when a vertex is extracted, its distance is final. This property holds exclusively for non-negative edge weights; negative weights violate the invariant since a longer path might later yield a shorter distance via negative edges. With a binary heap implementation, complexity is $O((V + E) \log V)$~\cite{book:clrs:2009}.
+
+\textbf{A* search}~\cite{article:hart:1968} extends Dijkstra by incorporating a heuristic function $h(v)$ estimating remaining distance to the goal. The priority becomes $f(v) = g(v) + h(v)$, where $g(v)$ represents the known distance from source. With admissible heuristics (never overestimating) and consistency ($h(u) \leq c(u,v) + h(v)$), A* guarantees optimality while potentially exploring fewer vertices than Dijkstra.
+
+Our implementation unifies both algorithms through a generic priority function abstraction: Dijkstra uses $g(v)$ as priority, while A* employs $g(v) + h(v)$. This design demonstrates that algorithmic variations can share a common core implementation.

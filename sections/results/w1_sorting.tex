@@ -1,0 +1,50 @@
+\subsection{Sorting Algorithms}
+
+\pgfplotstableread{dat/w1/benchmark_sorting.dat}{\sortingdata}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={Array size $n$},
+      ylabel={Time (ns)},
+      xmode=log,
+      ymode=log,
+      legend pos=north west,
+      legend style={font=\small},
+      width=0.85\textwidth,
+      height=0.27\textheight,
+      grid=major,
+      log basis x={10},
+    ]
+      \addplot[blue, mark=square*, thick] table[x=size, y=stlSort] {\sortingdata};
+      \addplot[red, mark=triangle*, thick] table[x=size, y=countingSort] {\sortingdata};
+      \addplot[green!60!black, mark=o, thick] table[x=size, y=radixSort] {\sortingdata};
+      \addplot[orange, mark=diamond*, thick] table[x=size, y=AndAlxSort] {\sortingdata};
+      \legend{STL sort, Counting sort, Radix sort, Hybrid quicksort}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Sorting algorithm performance on pre-sorted input.}
+  \label{fig:sorting_sorted}
+\end{figure}
+
+\Cref{fig:sorting_sorted} presents execution times on pre-sorted input. STL sort and hybrid quicksort exhibit the expected $O(n \log n)$ scaling behaviour. Counting sort demonstrates its theoretical $O(n)$ advantage for bounded-range integers.
+
+\begin{table}[H]
+  \centering
+  \caption{Sorting performance on reverse-sorted input (milliseconds).}
+  \label{tab:sorting_reverse}
+  \begin{tabular}{lrrr}
+    \toprule
+    Algorithm & $n = 10^4$ & $n = 10^5$ & $n = 10^6$ \\
+    \midrule
+    STL sort         & 0.04 & 0.45 & 5.43 \\
+    Counting sort    & 0.02 & 0.19 & 4.77 \\
+    Binary sort      & 0.56 & 6.69 & 102.06 \\
+    Radix sort       & 0.08 & 1.13 & 17.71 \\
+    Hybrid quicksort & 0.03 & 0.39 & 4.85 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\Cref{tab:sorting_reverse} details performance on reverse-sorted input. Binary sort, despite achieving correct $O(n \log n)$ asymptotic complexity, exhibits constants approximately $20\times$ higher than STL sort. This overhead stems from dynamic memory allocation and poor cache locality inherent to tree-based structures.

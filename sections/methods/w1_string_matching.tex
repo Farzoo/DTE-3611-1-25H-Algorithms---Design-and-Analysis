@@ -1,0 +1,5 @@
+\subsection{String Matching Algorithms}
+
+The \textbf{naive algorithm} slides a window across the text, performing character comparisons at each position. Worst-case complexity reaches $O(nm)$ for text length $n$ and pattern length $m$.
+
+The \textbf{Knuth-Morris-Pratt algorithm}~\cite{article:kmp:1977} preprocesses the pattern to construct a failure function, commonly termed the LPS (Longest Proper Prefix which is also Suffix) table. This structure indicates optimal shift distances upon mismatch, avoiding redundant comparisons. Preprocessing requires $O(m)$ time, while the search phase completes in $O(n)$, yielding $O(n + m)$ total complexity.

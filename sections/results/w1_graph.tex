@@ -1,0 +1,18 @@
+\FloatBarrier
+\subsection{Graph Traversal}
+
+\begin{table}[H]
+  \centering
+  \caption{Graph traversal benchmark on a 5-vertex test graph.}
+  \label{tab:graph_traversal}
+  \begin{tabular}{lrr}
+    \toprule
+    Algorithm & Time (ns) & CPU time (ns) \\
+    \midrule
+    BFS & 7,624 & 5,755 \\
+    DFS & 8,728 & 7,673 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+BFS and DFS exhibit comparable performance characteristics (\cref{tab:graph_traversal}), consistent with their shared $O(V + E)$ theoretical complexity. The marginal difference observed reflects implementation details rather than fundamental algorithmic distinctions.

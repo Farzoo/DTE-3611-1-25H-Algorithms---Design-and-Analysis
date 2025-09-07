@@ -1,0 +1,6 @@
+\FloatBarrier
+\section{Experimental Setup}
+
+All benchmarks were executed on an 8 cores cpu at 3302 MHz base frequency with 32 GB RAM, running Windows 11. Source code was compiled using MINGW in Release mode with full optimisations enabled. The Google Benchmark framework ensured statistical stability through automatic iteration count adjustment and outlier rejection.
+
+Sorting experiments evaluated five algorithms across three input distributions: pre-sorted, reverse-sorted, and random binary sequences. Array sizes ranged from $10^4$ to $10^6$ elements. Graph traversal and shortest path benchmarks employed a small test graph comprising 5 vertices and 7 edges. For A* evaluation, a trivial heuristic $h(v) = 1$ was used to isolate algorithmic overhead from heuristic quality effects.
