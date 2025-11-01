@@ -44,6 +44,8 @@ if(DTE3611_ENABLE_BENCHMARKS)
         add_subdirectory(benchmarks/predefined/predefined_graph_traversal_benchmarks graph_traversal)
         add_subdirectory(benchmarks/predefined/predefined_graph_path_finding_benchmarks graph_path_finding)
         add_subdirectory(benchmarks/my_benchmarks/my_first_benchmarks my_first)
+        add_subdirectory(benchmarks/my_benchmarks/my_knapsack_benchmarks my_knapsack)
+        add_subdirectory(benchmarks/my_benchmarks/my_subset_sum_benchmarks my_subset_sum)
     endif()
 
 endif(DTE3611_ENABLE_BENCHMARKS)
