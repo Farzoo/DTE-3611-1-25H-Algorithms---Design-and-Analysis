@@ -1,0 +1,47 @@
+\FloatBarrier
+\subsection{Dynamic Programming: Knapsack}
+
+\pgfplotstableread{dat/w2/benchmark_knapsack.dat}{\knapsackdata}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={Number of items $n$},
+      ylabel={Time (ns)},
+      ymode=log,
+      legend pos=north west,
+      legend style={font=\small},
+      width=0.85\textwidth,
+      height=0.3\textheight,
+      grid=major,
+      xtick={10, 15, 20, 25},
+    ]
+      \addplot[red, mark=triangle*, thick, line width=1.2pt] table[x=n, y=bruteforce_ns] {\knapsackdata};
+      \addplot[blue, mark=square*, thick, line width=1.2pt] table[x=n, y=dp_ns] {\knapsackdata};
+      \legend{Brute force $O(2^n)$, DP $O(n \cdot W)$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{0/1 Knapsack: brute-force enumeration versus dynamic programming.}
+  \label{fig:knapsack_comparison}
+\end{figure}
+
+\Cref{fig:knapsack_comparison} illustrates the dramatic performance divergence between brute-force enumeration and dynamic programming for the 0/1 knapsack problem. The brute-force curve exhibits exponential growth characteristic of $O(2^n)$ complexity, while the DP solution remains nearly constant, consistent with $O(n \cdot W)$ pseudo-polynomial behaviour for fixed capacity $W$.
+
+\begin{table}[H]
+  \centering
+  \caption{Knapsack benchmark: brute force versus DP ($W = 1000$).}
+  \label{tab:knapsack_benchmark}
+  \begin{tabular}{rrrr}
+    \toprule
+    $n$ & Brute force (ns) & DP (ns) & Speedup \\
+    \midrule
+    10 & 19,926 & 871 & $23\times$ \\
+    15 & 627,301 & 1,384 & $453\times$ \\
+    20 & 50,876,050 & 2,076 & $24{,}508\times$ \\
+    25 & 2,148,728,400 & 2,343 & $916{,}848\times$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\Cref{tab:knapsack_benchmark} quantifies the speedup achieved by dynamic programming. At $n = 25$, brute-force enumeration requires approximately 2.15 seconds per instance, whereas DP completes in 2.3 microseconds---a speedup exceeding $9 \times 10^5$. This ratio approximately doubles with each additional item, consistent with the theoretical speedup factor $2^n / (n \cdot W)$.

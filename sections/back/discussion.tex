@@ -1,10 +1,24 @@
 \FloatBarrier
 \section{Discussion}
 
+\subsection{Classical Algorithms}
+
 The experimental results presented in this study validate theoretical complexity predictions across all algorithm families examined. Linear-time sorting algorithms (counting sort, radix sort) demonstrate clear advantages over comparison-based alternatives when applicable to bounded-range integer inputs. Binary sort, despite achieving asymptotically optimal $O(n \log n)$ complexity, suffers from substantial constant-factor overhead attributable to dynamic memory allocation and suboptimal cache utilisation patterns inherent to pointer-based tree structures.
 
 The unified Dijkstra/A* implementation demonstrates that careful abstraction design enables code reuse without performance degradation. By parameterising the priority function, both algorithms share identical core logic while preserving their distinct characteristics.
 
-\textbf{Limitations.} Several constraints affect the present study. Graph benchmarks employed a minimal test instance (5 vertices), precluding meaningful validation of asymptotic complexity claims. String matching measurements fell below instrumentation resolution thresholds, yielding inconclusive timing data.
+\subsection{NP-Complete Problems}
 
-\textbf{Future work.} Subsequent investigations will extend this analysis to NP-complete problems, examining dynamic programming solutions for subset-sum and knapsack problems. Network flow algorithms, including Ford-Fulkerson and minimum-cost maximum-flow variants, constitute additional directions for exploration.
+The knapsack benchmarks provide compelling empirical evidence for the theoretical distinction between exponential and pseudo-polynomial complexity. The observed speedup factor of $9 \times 10^5$ at $n = 25$ corresponds closely to the theoretical ratio $2^{25} / (25 \times 1000) \approx 1.34 \times 10^6$, confirming that our implementations faithfully exhibit their expected asymptotic behaviours.
+
+For subset-sum, the more modest speedup reflects implementation choices rather than algorithmic deficiency. When seeking a single Boolean answer, DP would dominate unambiguously. Our decision to enumerate all solutions transforms both algorithms into output-sensitive procedures whose runtime depends on solution count.
+
+The NP-completeness of both problems, established through the reduction chain $\text{3-SAT} \leq_P \text{Subset-Sum} \leq_P \text{Knapsack}$, implies that no polynomial-time algorithm exists under standard complexity assumptions. Dynamic programming circumvents this barrier by exploiting the numeric structure of specific instances: when capacity $W$ remains polynomially bounded in $n$, the $O(n \cdot W)$ algorithm becomes practically efficient despite theoretical intractability.
+
+\subsection{Limitations}
+
+Several constraints affect this study. Graph benchmarks employed minimal test instances (5 vertices), precluding meaningful validation of asymptotic complexity claims. String matching measurements fell below instrumentation resolution thresholds. For the NP-complete problems, our subset-sum implementation's choice to enumerate all solutions complicates direct comparison with decision-only algorithms. Furthermore, knapsack benchmarks used fixed capacity $W = 1000$; varying $W$ would reveal the pseudo-polynomial nature more transparently.
+
+\subsection{Future Work}
+
+Subsequent investigations will address network flow algorithms (Ford-Fulkerson, minimum-cost maximum-flow) and their applications to bipartite matching. The relationship between maximum flow and minimum cut, established by the max-flow min-cut theorem, provides another instance where polynomial-time algorithms solve problems that might appear intractable.

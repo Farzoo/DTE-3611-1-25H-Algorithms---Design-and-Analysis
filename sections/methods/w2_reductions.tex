@@ -1,0 +1,19 @@
+\subsection{NP-Completeness Proofs}
+
+Both subset-sum and knapsack belong to the class of NP-complete problems. Their hardness is established through polynomial-time reductions from known NP-complete problems~\cite{course:dte3611:2025}.
+
+\subsubsection{3-SAT Reduces to Subset-Sum}
+
+The reduction from 3-SAT to subset-sum proceeds by encoding Boolean structure as arithmetic constraints~\cite{book:clrs:2009}. Given a 3-SAT formula with $n$ variables $x_1, \ldots, x_n$ and $k$ clauses $C_1, \ldots, C_k$, construct $2n + 2k$ integers, each comprising $n + k$ decimal digits.
+
+For each variable $x_i$, create two integers $y_i$ (representing $x_i = \mathit{true}$) and $z_i$ (representing $x_i = \mathit{false}$). The digit positions encode: variable selection (ensuring exactly one of $y_i$ or $z_i$ is chosen) and clause satisfaction (contributing to clauses where the literal appears). Auxiliary ``slack'' integers ensure each clause receives exactly the required contribution.
+
+The target sum encodes simultaneous satisfaction of all constraints. A subset achieving this target corresponds precisely to a satisfying assignment for the original formula. Since the reduction runs in polynomial time and 3-SAT is NP-complete, subset-sum is NP-hard. Combined with straightforward NP membership (the subset serves as a polynomial-time verifiable certificate), subset-sum is NP-complete.
+
+\subsubsection{Subset-Sum Reduces to Knapsack}
+
+The reduction from subset-sum to knapsack proves considerably simpler~\cite{course:dte3611:2025}. Given a subset-sum instance $(w_1, \ldots, w_n, W)$, construct a knapsack instance by setting $v_i = w_i$ for all items and capacity equal to $W$.
+
+Any subset summing exactly to $W$ yields knapsack value $W$, the maximum achievable. Conversely, a knapsack solution with value $W$ must select items whose weights sum to exactly $W$ (since values equal weights and total weight cannot exceed $W$). Thus the knapsack optimum equals $W$ if and only if the subset-sum instance admits a solution.
+
+This polynomial-time reduction, combined with subset-sum's NP-completeness, establishes that knapsack is NP-hard. Since feasible solutions are polynomial-time verifiable, the 0/1 knapsack decision problem is NP-complete.

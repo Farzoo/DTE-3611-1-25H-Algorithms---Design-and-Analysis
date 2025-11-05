@@ -1,0 +1,22 @@
+\subsection{0/1 Knapsack Problem}
+
+The 0/1 knapsack problem represents a canonical optimisation problem in combinatorial mathematics~\cite{course:dte3611:2025}. Given $n$ items, each characterised by a value $v_i > 0$ and weight $w_i > 0$, and a knapsack with capacity $W$, the objective is to select a subset maximising total value while respecting the weight constraint: maximise $\sum_{i \in S} v_i$ subject to $\sum_{i \in S} w_i \leq W$.
+
+\subsubsection{Brute-Force Approach}
+
+The exhaustive approach evaluates all $2^n$ item combinations, computing total value and weight for each subset, retaining the feasible combination with maximum value. This yields $O(2^n)$ time complexity, becoming computationally prohibitive beyond approximately 25 items.
+
+\subsubsection{Dynamic Programming Solution}
+
+The DP formulation, following the Bellman equation~\cite{article:bellman:1954}, defines $\mathit{OPT}(i, w)$ as the maximum achievable value using items $\{1, \ldots, i\}$ with capacity $w$. The recurrence captures three cases:
+\begin{equation}
+\mathit{OPT}(i, w) = \begin{cases}
+0 & \text{if } i = 0 \\
+\mathit{OPT}(i-1, w) & \text{if } w_i > w \\
+\max\bigl\{\mathit{OPT}(i-1, w),\; v_i + \mathit{OPT}(i-1, w - w_i)\bigr\} & \text{otherwise}
+\end{cases}
+\end{equation}
+
+The first case establishes the base condition with zero items. The second case handles items exceeding remaining capacity, necessarily excluded. The third case captures the fundamental choice: exclude item $i$ (inheriting the previous optimum) or include it (adding its value while reducing available capacity).
+
+The algorithm constructs table $M[0 \ldots n][0 \ldots W]$ in bottom-up fashion, then backtracks to identify selected items. When $M[i,w] > M[i-1,w]$, item $i$ belongs to the optimal solution. Total complexity is $O(n \cdot W)$ for both time and space, again pseudo-polynomial in nature.
