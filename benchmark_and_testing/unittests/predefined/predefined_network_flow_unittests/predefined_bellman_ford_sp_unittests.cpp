@@ -19,7 +19,7 @@ namespace alg = dte3611::graph::algorithms;
 // DAGOneF
 TEST_F(DAGOneF, dijkstraShortestPaths_FromAToE)
 {
-  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->e());
+  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->e(), distance_op);
   auto gold_paths = gold->shortestPathsAEGold();
   std::sort(std::begin(paths), std::end(paths));
   std::sort(std::begin(gold_paths), std::end(gold_paths));
@@ -28,7 +28,7 @@ TEST_F(DAGOneF, dijkstraShortestPaths_FromAToE)
 
 TEST_F(DAGOneF, dijkstraShortestPaths_FromAToC)
 {
-  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->c());
+  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->c(), distance_op);
   auto gold_paths = gold->shortestPathsACGold();
   std::sort(std::begin(paths), std::end(paths));
   std::sort(std::begin(gold_paths), std::end(gold_paths));
@@ -38,7 +38,7 @@ TEST_F(DAGOneF, dijkstraShortestPaths_FromAToC)
 // DAGTwoF
 TEST_F(DAGTwoF, dijkstraShortestPaths_FromAToE)
 {
-  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->e());
+  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->e(), distance_op);
   auto gold_paths = gold->shortestPathsAEGold();
   std::sort(std::begin(paths), std::end(paths));
   std::sort(std::begin(gold_paths), std::end(gold_paths));
@@ -47,7 +47,7 @@ TEST_F(DAGTwoF, dijkstraShortestPaths_FromAToE)
 
 TEST_F(DAGTwoF, dijkstraShortestPaths_FromAToC)
 {
-  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->c());
+  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->a(), gold->c(), distance_op);
   auto gold_paths = gold->shortestPathsACGold();
   std::sort(std::begin(paths), std::end(paths));
   std::sort(std::begin(gold_paths), std::end(gold_paths));
@@ -77,7 +77,7 @@ TEST_F(DAGTwoF, dijkstraShortestPaths_FromAToC)
 // Dag_Neg_One
 TEST_F(DAG_Neg_OneF, bellmanFordShortestPaths_FromSToT)
 {
-  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->s(), gold->t());
+  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->s(), gold->t(), distance_op);
   auto gold_paths = gold->shortestPathsSTGold();
   EXPECT_EQ(paths, gold_paths);
 
@@ -86,7 +86,7 @@ TEST_F(DAG_Neg_OneF, bellmanFordShortestPaths_FromSToT)
 // Dag_Neg_Two
 TEST_F(DAG_Neg_TwoF, bellmanFordShortestPaths_FromSToT)
 {
-  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->s(), gold->t());
+  auto paths = alg::bellmanFordShortestPaths(gold->graph(), gold->s(), gold->t(), distance_op);
   auto gold_paths = gold->shortestPathsSTGold();
   EXPECT_EQ(paths, gold_paths);
 
