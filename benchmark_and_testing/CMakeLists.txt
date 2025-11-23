@@ -28,6 +28,7 @@ if(DTE3611_ENABLE_UNITTESTS)
     add_subdirectory(unittests/my_tests/my_sort_tests)
     add_subdirectory(unittests/my_tests/my_subset_sum_tests)
     add_subdirectory(unittests/my_tests/my_knapsack_tests)
+    add_subdirectory(unittests/my_tests/my_cyclecanceling_tests)
 
   endif(TARGET GTest::GTest)
 endif(DTE3611_ENABLE_UNITTESTS)

@@ -95,7 +95,7 @@ namespace dte3611::np::algorithms
                        std::move(result), capacity, std::ref(value_projection),
                        std::ref(weight_projection));
         //      static_assert( false, "Complete the code - find the appropriate call signature in the cpp reference documentation." );
-      };
+      }
     };
 
     struct knapsack_01_bruteforce_fn {

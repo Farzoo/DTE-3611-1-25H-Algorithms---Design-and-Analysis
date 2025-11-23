@@ -124,7 +124,34 @@ namespace dte3611::np::algorithms
 
         return std::make_pair(path, bottleneck);
       }
+
+    template <typename Graph_T>
+    std::optional<typename Graph_T::vertex_descriptor>
+    findSource(Graph_T const& graph)
+    {
+      auto [v_begin, v_end] = boost::vertices(graph);
+      for (auto it = v_begin; it != v_end; ++it) {
+        if (boost::in_degree(*it, graph) == 0) {
+          return *it;
+        }
+      }
+      return std::nullopt;
     }
+
+    template <typename Graph_T>
+    std::optional<typename Graph_T::vertex_descriptor>
+    findSink(Graph_T const& graph)
+    {
+      auto [v_begin, v_end] = boost::vertices(graph);
+      for (auto it = v_begin; it != v_end; ++it) {
+        if (boost::out_degree(*it, graph) == 0) {
+          return *it;
+        }
+      }
+      return std::nullopt;
+    }
+
+  }  // namespace detail
 
     template <predef::concepts::graph::BidirectionalGraph Graph_T,
             predef::concepts::graph::EdgeCapacityOperator<Graph_T> EdCOp_T =
@@ -177,12 +204,139 @@ namespace dte3611::np::algorithms
     }
 
     template <typename Graph_T>
-    void cycleCanceling([[maybe_unused]] Graph_T& graph)
+    void cycleCanceling(Graph_T& graph)
     {
-    // 1. Find a feasible flow f   (Ford-Fulkerson maxflow in a related graph)
-    // 2. REPEAT (until no augmenting cycles)
-    //   2.1 Find an augmenting cycle C (Bellman-Ford in residual graph to detect negative cost cycles)
-    //   2.2 Augment flow along C
+      using VertexDescriptor = typename Graph_T::vertex_descriptor;
+      using EdgeDescriptor = typename Graph_T::edge_descriptor;
+
+      // 1. Find a feasible flow f   (Ford-Fulkerson maxflow in a related graph)
+
+      auto source_opt = detail::findSource(graph);
+      auto sink_opt = detail::findSink(graph);
+
+      if (!source_opt.has_value() || !sink_opt.has_value()) {
+        return;
+      }
+
+      auto source = source_opt.value();
+      auto sink = sink_opt.value();
+
+      maxFlow(graph, source, sink);
+
+      // 2. REPEAT (until no augmenting cycles)
+
+      struct ResidualEdgeInfo {
+        VertexDescriptor from;
+        VertexDescriptor to;
+        EdgeDescriptor original_edge;
+        bool is_forward;
+        int residual_capacity;
+        int cost;
+      };
+
+      auto buildResidualEdges = [&]() {
+        std::vector<ResidualEdgeInfo> residual_edges;
+
+        auto [edge_begin, edge_end] = boost::edges(graph);
+        for (auto it = edge_begin; it != edge_end; ++it) {
+          auto e = *it;
+          auto u = boost::source(e, graph);
+          auto v = boost::target(e, graph);
+          int cap = graph[e].capacity;
+          int flow = graph[e].flow;
+          int edge_cost = graph[e].cost;
+
+          // Forward edge (u -> v)
+          if (cap - flow > 0) {
+            residual_edges.push_back({u, v, e, true, cap - flow, edge_cost});
+          }
+
+          // Backward edge (v -> u)
+          if (flow > 0) {
+            residual_edges.push_back({v, u, e, false, flow, -edge_cost});
+          }
+        }
+
+        return residual_edges;
+      };
+
+      while (true) {
+        auto residual_edges = buildResidualEdges();
+
+        // 2.1 Find an augmenting cycle C (Bellman-Ford in residual graph to detect negative cost cycles)
+        auto const num_vertices = boost::num_vertices(graph);
+
+        std::vector<double> dist(num_vertices, 0);
+        std::vector<int> parent_edge_idx(num_vertices, -1);
+
+        VertexDescriptor cycle_vertex = num_vertices;
+
+        // Relax all edges |V| times
+        for (std::size_t i = 0; i < num_vertices; ++i) {
+          cycle_vertex = num_vertices;
+
+          for (std::size_t j = 0; j < residual_edges.size(); ++j) {
+            auto const& re = residual_edges[j];
+
+            if (re.residual_capacity <= 0) continue;
+
+            double new_dist = dist[re.from] + re.cost;
+
+            if (new_dist < dist[re.to] - 1e-9) {
+              dist[re.to] = new_dist;
+              parent_edge_idx[re.to] = static_cast<int>(j);
+
+              if (i == num_vertices - 1) {
+                cycle_vertex = re.to;
+              }
+            }
+          }
+        }
+
+        // No negative cycle found => Optimal
+        if (cycle_vertex == num_vertices) {
+          break;
+        }
+
+        // 2.2 Augment flow along C
+
+        VertexDescriptor v = cycle_vertex;
+        for (std::size_t i = 0; i < num_vertices; ++i) {
+          int edge_idx = parent_edge_idx[v];
+          if (edge_idx < 0) break;
+          v = residual_edges[edge_idx].from;
+        }
+
+        // Extract the cycle
+        std::vector<int> cycle_edge_indices;
+        VertexDescriptor start = v;
+        do {
+          int edge_idx = parent_edge_idx[v];
+          if (edge_idx < 0) break;
+          cycle_edge_indices.push_back(edge_idx);
+          v = residual_edges[edge_idx].from;
+        } while (v != start && cycle_edge_indices.size() <= num_vertices);
+
+        if (cycle_edge_indices.empty()) {
+          break;
+        }
+
+        // Find bottleneck
+        int bottleneck = std::numeric_limits<int>::max();
+        for (int idx : cycle_edge_indices) {
+          bottleneck = std::min(bottleneck, residual_edges[idx].residual_capacity);
+        }
+
+        // Augment flow along the cycle
+        for (int idx : cycle_edge_indices) {
+          auto const& re = residual_edges[idx];
+          if (re.is_forward) {
+            graph[re.original_edge].flow += bottleneck;
+          } else {
+            graph[re.original_edge].flow -= bottleneck;
+          }
+        }
+      }
     }
 
 }   // namespace dte3611::graph::algorithms
