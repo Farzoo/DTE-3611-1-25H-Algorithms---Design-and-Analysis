@@ -10,7 +10,8 @@ set( LIB_TO_TEST
   dte3611::lib3611 )
 
 set( UNITTESTS
-  my_cyclecanceling_unittests )
+  my_cyclecanceling_unittests
+  my_bipartite_matching_unittests )
 
 set( OTHER_LINK_TARGETS
   dte3611::predefined_utils )
