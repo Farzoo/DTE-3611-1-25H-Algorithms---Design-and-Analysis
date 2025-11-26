@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 cmake_policy(SET CMP0092 NEW)
 cmake_policy(SET CMP0167 NEW)
 include(FetchContent)
-project(dte3611_2025_YOUR_NAME_HERE VERSION 0.1 LANGUAGES CXX)
+project(dte3611_2025_CALDEIRA_RIBEIRO_DIOGO VERSION 0.1 LANGUAGES CXX)
 
 if(MSVC AND NOT VCPKG_TOOLCHAIN)
   message(FATAL_ERROR

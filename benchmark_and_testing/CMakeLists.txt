@@ -48,6 +48,7 @@ if(DTE3611_ENABLE_BENCHMARKS)
         add_subdirectory(benchmarks/my_benchmarks/my_knapsack_benchmarks my_knapsack)
         add_subdirectory(benchmarks/my_benchmarks/my_subset_sum_benchmarks my_subset_sum)
         add_subdirectory(benchmarks/my_benchmarks/my_networkflow_benchmarks my_networkflow)
+        add_subdirectory(benchmarks/my_benchmarks/my_amortized_benchmarks my_amortized)
     endif()
 
 endif(DTE3611_ENABLE_BENCHMARKS)
