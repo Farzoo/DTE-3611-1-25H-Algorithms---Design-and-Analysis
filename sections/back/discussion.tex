@@ -15,10 +15,16 @@ For subset-sum, the more modest speedup reflects implementation choices rather t
 
 The NP-completeness of both problems, established through the reduction chain $\text{3-SAT} \leq_P \text{Subset-Sum} \leq_P \text{Knapsack}$, implies that no polynomial-time algorithm exists under standard complexity assumptions. Dynamic programming circumvents this barrier by exploiting the numeric structure of specific instances: when capacity $W$ remains polynomially bounded in $n$, the $O(n \cdot W)$ algorithm becomes practically efficient despite theoretical intractability.
 
+\subsection{Network Flow Algorithms}
+
+The network flow experiments reveal favourable empirical behaviour for the Edmonds-Karp algorithm on sparse layered networks. With scaling closer to $O(V^2)$ than the theoretical $O(VE^2)$ bound, Edmonds-Karp proves highly efficient for maximum flow computation when network structure produces short augmenting paths.
+
+The cycle-canceling algorithm, which extends maximum flow to minimum-cost maximum flow, incurs substantial additional overhead. Since cycle-canceling first computes a maximum flow and then iteratively eliminates negative-cost cycles, the measured ratio (up to $213\times$ at $V = 2000$) reflects the cost of this optimisation phase rather than a direct algorithmic comparison. This distinction is practically significant: applications requiring only maximum flow values should employ Edmonds-Karp alone, reserving cycle-canceling for scenarios where transportation cost minimisation is essential.
+
 \subsection{Limitations}
 
-Several constraints affect this study. Graph benchmarks employed minimal test instances (5 vertices), precluding meaningful validation of asymptotic complexity claims. String matching measurements fell below instrumentation resolution thresholds. For the NP-complete problems, our subset-sum implementation's choice to enumerate all solutions complicates direct comparison with decision-only algorithms. Furthermore, knapsack benchmarks used fixed capacity $W = 1000$; varying $W$ would reveal the pseudo-polynomial nature more transparently.
+Several constraints affect this study. Graph traversal and shortest path benchmarks (Week 1) employed minimal test instances (5 vertices), precluding meaningful validation of asymptotic complexity claims for these algorithms. However, network flow experiments (Week 3) utilised substantially larger sparse networks with up to 2000 vertices, enabling more meaningful empirical complexity observations. String matching measurements fell below instrumentation resolution thresholds. For the NP-complete problems, our subset-sum implementation's choice to enumerate all solutions complicates direct comparison with decision-only algorithms. Furthermore, knapsack benchmarks used fixed capacity $W = 1000$; varying $W$ would reveal the pseudo-polynomial nature more transparently.
 
 \subsection{Future Work}
 
-Subsequent investigations will address network flow algorithms (Ford-Fulkerson, minimum-cost maximum-flow) and their applications to bipartite matching. The relationship between maximum flow and minimum cut, established by the max-flow min-cut theorem, provides another instance where polynomial-time algorithms solve problems that might appear intractable.
+Subsequent investigations will address Week 4 content: amortised analysis of data structures and linear programming via the simplex algorithm. Regarding network flow, our cycle-canceling implementation follows Klein's basic algorithm; incorporating the Goldberg-Tarjan refinement would guarantee polynomial-time termination for integer flows.

@@ -1,0 +1,52 @@
+\FloatBarrier
+\subsection{Network Flow Algorithms}
+
+\pgfplotstableread{dat/w3/w3_networkflow_comparison.dat}{\networkflowdata}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      xlabel={Number of vertices $V$},
+      ylabel={Time (ns)},
+      ymode=log,
+      xmode=log,
+      legend pos=north west,
+      legend style={font=\small},
+      width=0.85\textwidth,
+      height=0.35\textheight,
+      grid=major,
+      log ticks with fixed point,
+    ]
+      \addplot[blue, mark=square*, thick, line width=1.2pt] table[x=V, y=EdmondsKarp_ns] {\networkflowdata};
+      \addplot[red, mark=triangle*, thick, line width=1.2pt] table[x=V, y=CycleCanceling_ns] {\networkflowdata};
+      \legend{Edmonds-Karp $O(VE^2)$, Cycle-Canceling $O(VE^2 C)$}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Maximum flow computation: baseline versus cost-optimised variant ($E = 3V$).}
+  \label{fig:networkflow_comparison}
+\end{figure}
+
+\Cref{fig:networkflow_comparison} presents execution times for the Edmonds-Karp and cycle-canceling algorithms on randomly generated flow networks. The test networks employ a wide layered topology with four layers, ensuring that source and sink degrees scale proportionally with $V$. This design produces monotonically increasing execution times that reflect algorithmic complexity rather than structural artefacts.
+
+\begin{table}[H]
+  \centering
+  \caption{Computational overhead of cost optimisation in maximum flow.}
+  \label{tab:networkflow_benchmark}
+  \begin{tabular}{rrrr}
+    \toprule
+    $V$ & Edmonds-Karp (ns) & Cycle-Canceling (ns) & Ratio \\
+    \midrule
+    10 & 1,848 & 6,557 & $3.5\times$ \\
+    50 & 26,088 & 192,540 & $7.4\times$ \\
+    100 & 87,887 & 1,275,937 & $14.5\times$ \\
+    500 & 2,582,097 & 192,708,333 & $74.6\times$ \\
+    1000 & 11,230,469 & 1,375,000,000 & $122\times$ \\
+    2000 & 58,238,636 & 12,438,000,000 & $213\times$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\Cref{tab:networkflow_benchmark} quantifies the computational overhead of cost optimisation. Edmonds-Karp, which computes maximum flow without cost considerations, exhibits empirical complexity closer to $O(V^2)$ than the theoretical $O(VE^2)$ bound: doubling $V$ increases execution time by approximately $4\times$ rather than $8\times$. This favourable behaviour arises because sparse networks with wide cuts produce short augmenting paths and moderate maximum flow values.
+
+The cycle-canceling algorithm solves a strictly harder problem: it first computes a maximum flow (internally invoking Edmonds-Karp), then iteratively detects and eliminates negative-cost cycles via Bellman-Ford traversals to minimise total transportation cost. The measured overhead---reaching $213\times$ at $V = 2000$---reflects exclusively this additional optimisation phase. Each cycle detection requires $O(VE)$ time, and the number of iterations depends on both network structure and cost distribution. For applications requiring only maximum flow without cost optimisation, Edmonds-Karp alone provides a substantially more efficient solution.

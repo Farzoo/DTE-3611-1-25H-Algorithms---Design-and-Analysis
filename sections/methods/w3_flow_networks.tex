@@ -1,0 +1,17 @@
+\subsection{Flow Networks}
+
+A \textbf{flow network} is a directed graph $G = (V, E)$ equipped with a capacity function $c: E \to \mathbb{R}^+$ and two distinguished vertices: a source $s$ and a sink $t$~\cite{course:dte3611:2025}. Each edge $(u,v) \in E$ admits a maximum flow of $c(u,v)$ units. Flow networks model transportation systems, communication networks, and resource allocation problems where commodities traverse from origin to destination through intermediate nodes.
+
+A \textbf{flow} $f: E \to \mathbb{R}^+$ assigns a non-negative value to each edge, subject to two constraints. The \emph{capacity constraint} requires $0 \leq f(u,v) \leq c(u,v)$ for all edges. The \emph{conservation constraint} mandates that flow entering any vertex (except $s$ and $t$) equals flow departing:
+\begin{equation}
+\sum_{(u,v) \in E} f(u,v) = \sum_{(v,w) \in E} f(v,w) \quad \forall v \in V \setminus \{s,t\}
+\end{equation}
+
+The \textbf{value} of a flow, denoted $|f|$, equals the net flow departing the source. The maximum flow problem seeks a flow of maximum value.
+
+An \textbf{$s$-$t$ cut} partitions $V$ into sets $S$ and $T = V \setminus S$ with $s \in S$ and $t \in T$. The capacity of cut $(S,T)$ equals the sum of capacities crossing from $S$ to $T$:
+\begin{equation}
+c(S,T) = \sum_{u \in S, v \in T} c(u,v)
+\end{equation}
+
+The \textbf{max-flow min-cut theorem} establishes that the maximum flow value equals the minimum cut capacity~\cite{article:fordfulkerson:1956}. This duality provides both a theoretical foundation and a termination criterion for flow algorithms.

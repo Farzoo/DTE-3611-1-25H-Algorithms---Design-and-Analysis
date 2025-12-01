@@ -1,0 +1,16 @@
+\subsection{Minimum-Cost Maximum Flow}
+
+The minimum-cost maximum flow problem extends the maximum flow formulation by associating a cost $w(u,v)$ with each edge~\cite{course:dte3611:2025}. The objective becomes finding a maximum flow that minimises total transportation cost $\sum_{(u,v) \in E} w(u,v) \cdot f(u,v)$.
+
+The \textbf{Bellman-Ford algorithm} computes shortest paths from a single source while tolerating negative edge weights~\cite{book:clrs:2009}. The algorithm performs $|V|-1$ iterations, each relaxing all edges: for edge $(u,v)$, if $d[u] + w(u,v) < d[v]$, update $d[v]$. This exhaustive approach guarantees correctness since any shortest path contains at most $|V|-1$ edges. A subsequent pass detects negative cycles: if any relaxation remains possible, such a cycle exists. Complexity is $O(VE)$.
+
+The \textbf{cycle-canceling algorithm} leverages Bellman-Ford to optimise flow cost. The procedure operates in two phases:
+
+\begin{enumerate}
+\item Compute a maximum flow using any max-flow algorithm (e.g., Edmonds-Karp).
+\item While a negative-cost cycle exists in the residual graph, augment flow around it.
+\end{enumerate}
+
+In the residual graph, edge costs follow a specific convention: forward edges retain their original cost $w(u,v)$, while backward edges carry negated cost $-w(u,v)$. This encoding ensures that redirecting flow through a backward edge effectively ``refunds'' the cost of the original flow. A negative-cost cycle thus represents an opportunity to rearrange existing flow for reduced total cost without altering the flow value.
+
+Each cycle cancellation strictly decreases total cost while preserving flow conservation. The algorithm terminates when no negative cycles remain, yielding an optimal-cost maximum flow. Worst-case complexity is $O(VE^2 \cdot C)$ where $C$ denotes the maximum edge cost, though practical performance depends heavily on network structure.

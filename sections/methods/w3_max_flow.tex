@@ -1,0 +1,11 @@
+\subsection{Maximum Flow: Edmonds-Karp Algorithm}
+
+The Ford-Fulkerson method~\cite{article:fordfulkerson:1956} provides a general framework for computing maximum flow. The algorithm iteratively identifies augmenting paths from $s$ to $t$ in the residual graph and pushes flow along them until no such path exists.
+
+The \textbf{residual graph} $G_f$ encodes remaining capacity after flow $f$ has been established. For each edge $(u,v)$ with capacity $c(u,v)$ and current flow $f(u,v)$, the residual graph contains a forward edge with capacity $c(u,v) - f(u,v)$ representing additional flow capacity, and a backward edge $(v,u)$ with capacity $f(u,v)$ permitting flow cancellation. These backward edges enable the algorithm to correct suboptimal routing decisions.
+
+An \textbf{augmenting path} is any $s$-$t$ path in $G_f$ where all edges have positive residual capacity. The \textbf{bottleneck} of such a path equals the minimum residual capacity among its edges. Each augmentation increases total flow by the bottleneck value.
+
+The original Ford-Fulkerson method does not specify how to select augmenting paths, potentially leading to non-termination with irrational capacities or exponential running time with poor choices. The \textbf{Edmonds-Karp algorithm}~\cite{article:edmondskarp:1972} resolves this by mandating breadth-first search (BFS) for path discovery, guaranteeing selection of shortest augmenting paths in terms of edge count.
+
+This BFS strategy yields worst-case complexity $O(VE^2)$. The bound follows from two observations: the shortest augmenting path length increases monotonically, with at most $O(VE)$ total augmentations occurring; each BFS traversal requires $O(E)$ time. In practice, performance often proves substantially better, particularly on sparse networks where augmenting paths remain short.
