@@ -1,0 +1,22 @@
+\subsection{Linear Programming}
+
+\textbf{Linear Programming} (LP) provides a framework for optimising a linear objective function subject to linear inequality constraints~\cite{online:mit6046:lp:2015}. The standard form expresses an LP as:
+\begin{equation}
+\max \mathbf{c}^T \mathbf{x} \quad \text{subject to} \quad A\mathbf{x} \leq \mathbf{b}, \quad \mathbf{x} \geq 0
+\end{equation}
+where $\mathbf{x} \in \mathbb{R}^n$ represents the decision variables, $\mathbf{c} \in \mathbb{R}^n$ the objective coefficients, $A \in \mathbb{R}^{m \times n}$ the constraint matrix, and $\mathbf{b} \in \mathbb{R}^m$ the constraint bounds.
+
+The feasible region forms a convex polytope, and the optimal solution (if it exists) occurs at a vertex. The \textbf{Simplex algorithm} exploits this property by traversing adjacent vertices along edges of the polytope, improving the objective at each step until reaching an optimum.
+
+\subsection{Shortest Paths as Linear Programming}
+
+The single-source shortest path problem admits a natural LP formulation, demonstrating that classical graph algorithms implicitly solve structured linear programs. Given a directed graph $G = (V, E)$ with non-negative edge weights $w : E \to \mathbb{R}^+$ and source vertex $s$, define decision variables $d_v$ representing the distance from $s$ to each vertex $v \in V$.
+
+The LP formulation is:
+\begin{equation}
+\max \sum_{v \in V} d_v \quad \text{subject to} \quad d_v - d_u \leq w(u,v) \; \forall (u,v) \in E, \quad d_s = 0, \quad d_v \geq 0
+\end{equation}
+
+The constraints $d_v - d_u \leq w(u,v)$ encode the \textbf{triangle inequality}: no vertex can be reached faster than by following an edge from a closer vertex. Maximising the sum of distances pushes each $d_v$ to its upper bound---precisely the shortest path distance.
+
+Dijkstra's algorithm~\cite{article:dijkstra:1959} solves this LP implicitly in $O(E + V \log V)$ time by exploiting the problem's combinatorial structure. The Simplex algorithm, being general-purpose, cannot match this efficiency but demonstrates that shortest path computation is a special case of linear optimisation.

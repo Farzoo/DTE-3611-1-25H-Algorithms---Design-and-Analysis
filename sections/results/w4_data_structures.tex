@@ -1,0 +1,82 @@
+\FloatBarrier
+\subsection{Dictionary Performance}
+
+\pgfplotstableread{dat/w4/w4_map_comparison.dat}{\mapcompdata}
+
+\begin{table}[htbp]
+\centering
+\caption{Insertion performance: \texttt{std::map} vs \texttt{std::unordered\_map}.}
+\label{tab:map_insert}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & \texttt{std::map} ($\mu$s) & \texttt{std::unordered\_map} ($\mu$s) & Ratio \\
+\midrule
+1\,000 & 63.4 & 42.0 & 1.51 \\
+10\,000 & 1\,161 & 472 & 2.46 \\
+100\,000 & 20\,287 & 7\,165 & 2.83 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Lookup performance: \texttt{std::map} vs \texttt{std::unordered\_map}.}
+\label{tab:map_lookup}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & \texttt{std::map} ($\mu$s) & \texttt{std::unordered\_map} ($\mu$s) & Ratio \\
+\midrule
+1\,000 & 9.72 & 3.27 & 2.97 \\
+10\,000 & 601 & 41.4 & 14.5 \\
+100\,000 & 12\,587 & 976 & 12.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:map_insert} and \Cref{tab:map_lookup} compare dictionary implementations for random integer keys. Insertion ratios increase from 1.51$\times$ at $n = 10^3$ to 2.83$\times$ at $n = 10^5$, reflecting the growing gap between $O(\log n)$ and $O(1)$ complexity. Lookup performance exhibits more dramatic differences: \texttt{std::unordered\_map} achieves 13--15$\times$ speedup at larger sizes, consistent with constant-time hash table access versus logarithmic tree traversal.
+
+\FloatBarrier
+\subsection{Memory Allocator Impact}
+
+\pgfplotstableread{dat/w4/w4_pmr_map.dat}{\pmrmapdata}
+\pgfplotstableread{dat/w4/w4_pmr_strings.dat}{\pmrstringsdata}
+
+\begin{table}[htbp]
+\centering
+\caption{PMR allocator comparison for \texttt{std::map} insertions.}
+\label{tab:pmr_map}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & \texttt{std::allocator} ($\mu$s) & \texttt{pmr::monotonic} ($\mu$s) & \texttt{pmr::pool} ($\mu$s) & Speedup (mono) & Speedup (pool) \\
+\midrule
+1\,000 & 73.8 & 42.5 & 83.2 & 1.74$\times$ & 0.89$\times$ \\
+10\,000 & 1\,734 & 929 & 1\,221 & 1.87$\times$ & 1.42$\times$ \\
+100\,000 & 79\,450 & 22\,868 & 16\,993 & 3.47$\times$ & 4.68$\times$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{PMR allocator comparison for \texttt{std::vector<std::string>} construction.}
+\label{tab:pmr_strings}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & \texttt{std::allocator} ($\mu$s) & \texttt{pmr::monotonic} ($\mu$s) & \texttt{pmr::pool} ($\mu$s) & Speedup (mono) & Speedup (pool) \\
+\midrule
+1\,000 & 44.5 & 7.52 & 23.0 & 5.92$\times$ & 1.93$\times$ \\
+10\,000 & 531 & 160 & 803 & 3.32$\times$ & 0.66$\times$ \\
+100\,000 & 7\,396 & 3\,898 & 7\,462 & 1.90$\times$ & 0.99$\times$ \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\Cref{tab:pmr_map} and \Cref{tab:pmr_strings} evaluate the performance impact of polymorphic memory resources on allocation-intensive workloads. The monotonic buffer resource provides consistent speedups, achieving 1.7--3.5$\times$ improvement for map insertions and 1.9--5.9$\times$ for string vector construction.
+
+The string benchmark exhibits larger speedups at smaller sizes because string copying triggers heap allocations for each element exceeding the small string optimisation threshold. The monotonic allocator's bump-pointer strategy and no-op deallocation prove particularly effective for this pattern.
+
+Interestingly, the pool resource shows mixed results. For map insertions at $n = 10^5$, the pool resource achieves 4.68$\times$ speedup---outperforming even monotonic allocation---likely due to efficient block reuse for fixed-size tree nodes. However, for strings with variable-length allocations, pool overhead frequently negates benefits (ratios 0.66--0.99$\times$). These findings suggest that PMR strategy selection should be guided by allocation pattern characteristics: monotonic for batch processing with bulk deallocation, pools for fixed-size allocations with high reuse.
