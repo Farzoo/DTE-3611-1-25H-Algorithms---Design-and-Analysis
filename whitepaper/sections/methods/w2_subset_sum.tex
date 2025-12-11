@@ -1,0 +1,19 @@
+\subsection{Subset Sum Problem}
+
+The subset-sum problem is a fundamental NP-complete problem~\cite{course:dte3611:2025}. Given a set of $n$ non-negative integers $\{w_1, \ldots, w_n\}$ and a target value $W$, the decision variant asks whether there exists a subset $S$ such that $\sum_{i \in S} w_i = W$.
+
+\subsubsection{Brute-Force Approach}
+
+The naive solution enumerates all $2^n$ possible subsets, computing each sum and comparing against the target. This exhaustive search guarantees correctness but yields exponential time complexity $O(2^n)$, rendering the approach impractical for instances exceeding approximately 25 elements.
+
+Our implementation employs backtracking with pruning: branches where the running sum exceeds the target are abandoned early, assuming non-negative values. This optimisation reduces average-case complexity but preserves worst-case exponential behaviour.
+
+\subsubsection{Dynamic Programming Solution}
+
+The DP formulation defines Boolean subproblems $\mathit{DP}[i][w]$ indicating whether sum $w$ is achievable using elements $\{w_1, \ldots, w_i\}$. The recurrence relation captures the binary choice of including or excluding element $i$:
+\begin{equation}
+\mathit{DP}[i][w] = \mathit{DP}[i-1][w] \;\lor\; \mathit{DP}[i-1][w - w_i]
+\end{equation}
+with base cases $\mathit{DP}[0][0] = \mathit{true}$ and $\mathit{DP}[0][w] = \mathit{false}$ for $w > 0$.
+
+The algorithm constructs a table of dimensions $(n+1) \times (W+1)$, yielding $O(n \cdot W)$ time and space complexity. This pseudo-polynomial bound proves efficient when $W$ remains polynomially bounded in $n$, though $W$ may be exponential in its binary representation.

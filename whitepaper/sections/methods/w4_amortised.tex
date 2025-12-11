@@ -1,0 +1,11 @@
+\subsection{Amortised Analysis}
+
+\textbf{Amortised analysis} provides a method for analysing the average cost of operations over a sequence, even when individual operations exhibit high variance in their execution time~\cite{online:mit6046:amortized:2015}. Unlike average-case analysis, which relies on probabilistic assumptions about input distributions, amortised analysis guarantees worst-case bounds on the total cost of any sequence of operations.
+
+The \textbf{aggregate method} computes amortised cost by dividing the total worst-case cost $T(n)$ of $n$ operations by $n$. If $T(n) \in O(f(n))$, then each operation has amortised cost $O(f(n)/n)$.
+
+A canonical example is \texttt{std::vector::push\_back}. When the vector's capacity is exhausted, a reallocation occurs: a new buffer of doubled capacity is allocated, existing elements are copied, and the old buffer is deallocated. This reallocation costs $O(n)$ for a vector of size $n$. However, reallocation occurs only after $n$ insertions since the previous reallocation. The total cost for $n$ insertions is therefore:
+\begin{equation}
+T(n) = n + \sum_{i=0}^{\lfloor \log_2 n \rfloor} 2^i = n + 2n - 1 = O(n)
+\end{equation}
+Dividing by $n$ yields an amortised cost of $O(1)$ per insertion, despite occasional $O(n)$ operations.

@@ -1,0 +1,15 @@
+\subsection{Dictionary Data Structures}
+
+The C++ Standard Library provides two primary dictionary abstractions with distinct performance characteristics. \texttt{std::map} implements an ordered associative container using a \textbf{Red-Black Tree}, a self-balancing binary search tree that guarantees $O(\log n)$ complexity for insertion, deletion, and lookup operations. The logarithmic bound holds in the worst case, making \texttt{std::map} suitable for applications requiring predictable performance.
+
+\texttt{std::unordered\_map} implements a hash table with expected $O(1)$ complexity for all operations under the assumption of a good hash function. However, worst-case complexity degrades to $O(n)$ when hash collisions occur. The amortised $O(1)$ bound assumes that rehashing (triggered when load factor exceeds a threshold) distributes its cost across preceding insertions.
+
+\subsection{Polymorphic Memory Resources}
+
+C++17 introduced \textbf{Polymorphic Memory Resources} (PMR), enabling runtime selection of allocation strategies without modifying container types~\cite{online:alexandrescu:2019}. Three allocator strategies are considered:
+
+\texttt{std::allocator} provides general-purpose allocation via \texttt{malloc}/\texttt{free}, optimised for diverse allocation patterns but incurring overhead from heap management and potential fragmentation.
+
+\texttt{pmr::monotonic\_buffer\_resource} allocates from a pre-allocated buffer using a bump pointer. Allocation reduces to pointer increment, and deallocation is a no-op until the entire buffer is released. This strategy excels for workloads with many small allocations followed by bulk deallocation.
+
+\texttt{pmr::unsynchronized\_pool\_resource} maintains pools of fixed-size blocks, reducing fragmentation for allocations of similar sizes. Block reuse avoids repeated system calls but incurs pool management overhead.

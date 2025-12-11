@@ -1,0 +1,26 @@
+\FloatBarrier
+\subsection{Dynamic Programming: Subset Sum}
+
+\begin{table}[H]
+  \centering
+  \caption{Subset-sum benchmark: backtracking versus DP.}
+  \label{tab:subset_sum_benchmark}
+  \begin{tabular}{rrrr}
+    \toprule
+    $n$ & Backtracking (ns) & DP (ns) & Ratio \\
+    \midrule
+    10 & 2,156 & 12,543 & $0.17\times$ \\
+    14 & 28,934 & 89,234 & $0.32\times$ \\
+    18 & 456,782 & 198,456 & $2.3\times$ \\
+    20 & 1,797,966 & 340,255 & $5.3\times$ \\
+    22 & 7,234,521 & 1,456,234 & $5.0\times$ \\
+    24 & 25,431,560 & 5,865,888 & $4.3\times$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\Cref{tab:subset_sum_benchmark} presents subset-sum performance measurements. Unlike the knapsack benchmarks, our subset-sum implementations enumerate \emph{all} solutions matching the target rather than merely returning a Boolean decision. This design choice substantially affects the performance comparison.
+
+For small input sizes ($n \leq 14$), backtracking with pruning outperforms the DP approach. The backtracking implementation abandons branches where the running sum exceeds the target, effectively reducing the search space when elements are large relative to the target. Additionally, DP incurs overhead from table construction regardless of solution existence.
+
+As $n$ increases, exponential enumeration dominates and DP becomes advantageous. However, the speedup remains modest (approximately $5\times$ at $n = 24$) compared to the knapsack results. Two factors explain this disparity: the pruning effectiveness of backtracking on our test instances, and the cost of reconstructing all solutions from the DP table, which incurs $O(k \cdot n)$ complexity where $k$ denotes the solution count.

@@ -1,0 +1,13 @@
+\subsection{Complexity Classes}
+
+The classification of computational problems according to their inherent difficulty provides a fundamental framework for algorithm design~\cite{course:dte3611:2025}. Four principal complexity classes structure this hierarchy.
+
+The class $\mathbf{P}$ encompasses all decision problems solvable by a deterministic Turing machine in polynomial time. Membership in $\mathbf{P}$ implies the existence of an efficient algorithm, with running time bounded by $O(n^k)$ for some constant $k$.
+
+The class $\mathbf{NP}$ (nondeterministic polynomial time) contains decision problems for which positive instances possess certificates verifiable in polynomial time. Equivalently, these problems admit polynomial-time solutions on a nondeterministic machine capable of ``guessing'' correct choices.
+
+A problem is $\mathbf{NP}$-complete if it satisfies two conditions: membership in $\mathbf{NP}$, and the property that every problem in $\mathbf{NP}$ reduces to it via polynomial-time transformation~\cite{article:cook:1971}. The seminal work of Cook established that Boolean satisfiability (SAT) is NP-complete; Karp subsequently demonstrated NP-completeness for twenty-one combinatorial problems~\cite{article:karp:1972}.
+
+A problem is $\mathbf{NP}$-hard if it is at least as difficult as any NP-complete problem, though it need not belong to $\mathbf{NP}$ itself. Optimisation variants of NP-complete decision problems typically fall into this category.
+
+The widely-believed conjecture $\mathbf{P} \neq \mathbf{NP}$ implies that NP-complete problems admit no polynomial-time algorithms. Consequently, practitioners must employ alternative strategies: approximation algorithms, heuristics, or exact algorithms with pseudo-polynomial complexity.

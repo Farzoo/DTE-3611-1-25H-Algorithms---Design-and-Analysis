@@ -1,0 +1,4 @@
+n	map_insert_us	unordered_insert_us	insert_ratio	map_lookup_us	unordered_lookup_us	lookup_ratio
+1000	63.4	42.0	1.51	9.72	3.27	2.97
+10000	1161	472	2.46	601	41.4	14.52
+100000	20287	7165	2.83	12587	976	12.90

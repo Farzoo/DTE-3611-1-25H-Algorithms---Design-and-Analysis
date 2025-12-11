@@ -1,0 +1,13 @@
+# Edmonds-Karp benchmark results
+# V = number of vertices, E = 3V (sparse network)
+# Time in nanoseconds (CPU time)
+# Empirical complexity: O(V^2) on wide layered networks
+V	EdmondsKarp_ns
+10	1848
+20	6975
+50	26088
+100	87887
+200	344292
+500	2582097
+1000	11230469
+2000	58238636

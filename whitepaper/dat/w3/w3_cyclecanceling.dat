@@ -1,0 +1,13 @@
+# Cycle-Canceling benchmark results
+# V = number of vertices, E = 3V (sparse network)
+# Time in nanoseconds (CPU time)
+# Includes: maxFlow + negative cycle detection (Bellman-Ford) + augmentation
+V	CycleCanceling_ns
+10	6557
+20	22496
+50	192540
+100	1275937
+200	9583333
+500	192708333
+1000	1375000000
+2000	12438000000

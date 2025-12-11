@@ -1,0 +1,4 @@
+n	std_alloc_us	pmr_monotonic_us	pmr_pool_us	speedup_mono	speedup_pool
+1000	73.8	42.5	83.2	1.74	0.89
+10000	1734	929	1221	1.87	1.42
+100000	79450	22868	16993	3.47	4.68

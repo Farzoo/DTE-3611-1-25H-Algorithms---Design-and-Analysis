@@ -1,0 +1,18 @@
+\FloatBarrier
+\subsection{Shortest Path Algorithms}
+
+\begin{table}[H]
+  \centering
+  \caption{Pathfinding performance with trivial heuristic $h(v) = 1$.}
+  \label{tab:pathfinding}
+  \begin{tabular}{lrr}
+    \toprule
+    Algorithm & Time (ns) & CPU time (ns) \\
+    \midrule
+    Dijkstra & 17,645 & 16,044 \\
+    A*       & 19,975 & 18,834 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Under trivial heuristic conditions (\cref{tab:pathfinding}), A* exhibits slightly higher execution time than Dijkstra. This result is expected: the uninformative heuristic $h(v) = 1$ provides no guidance toward the goal, causing A* to explore essentially the same vertices as Dijkstra while incurring additional overhead for heuristic evaluation. The true advantage of A* manifests only with informative, admissible heuristics on large search spaces.

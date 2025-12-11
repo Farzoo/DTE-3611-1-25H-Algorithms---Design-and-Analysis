@@ -1,0 +1,9 @@
+\subsection{Sorting Algorithms}
+
+\textbf{Binary sort} inserts elements into a self-balancing binary search tree, then extracts them via in-order traversal. Our implementation employs \texttt{std::multiset}, a red-black tree guaranteeing $O(\log n)$ insertion. Total complexity is $O(n \log n)$. The key invariant is the BST property: for any node, left descendants are smaller and right descendants are larger.
+
+\textbf{Counting sort} operates in $O(n + k)$ time where $k$ denotes the value range. The algorithm constructs a histogram, computes prefix sums, then places elements in stable order. This achieves linear time for bounded integers but requires $O(n + k)$ auxiliary space.
+
+\textbf{Radix sort} processes elements digit by digit, applying counting sort at each position. For $d$-digit numbers in base $b$, complexity is $O(d(n + b))$. Our implementation processes bytes ($b = 256$), yielding linear time for fixed-width integers.
+
+\textbf{Hybrid quicksort} combines non-recursive quicksort with insertion sort for small subarrays, inspired by Alexandrescu~\cite{online:alexandrescu:2019}. It employs median-of-three pivot selection and Hoare partitioning. Expected complexity is $O(n \log n)$.

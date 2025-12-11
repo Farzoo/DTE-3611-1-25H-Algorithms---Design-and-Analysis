@@ -1,0 +1,15 @@
+\subsection{Dynamic Programming}
+
+Dynamic programming (DP) is a systematic approach for solving optimisation problems by decomposing them into overlapping subproblems~\cite{article:bellman:1954}. Unlike divide-and-conquer approaches that partition problems into independent subproblems, DP exploits the redundancy inherent in overlapping substructures by caching intermediate results for subsequent reuse.
+
+The course material~\cite{course:dte3611:2025} prescribes five steps for developing DP solutions:
+
+\begin{enumerate}
+\item \textbf{Define subproblems}: Identify a parameterised family of smaller instances whose solutions contribute to the original problem.
+\item \textbf{Guess}: Determine which aspect of the solution must be hypothesised at each step.
+\item \textbf{Relate subproblem solutions}: Establish a recurrence expressing optimal subproblem values in terms of smaller subproblems.
+\item \textbf{Build the solution}: Either recurse with memoisation (top-down) or construct a table iteratively (bottom-up), ensuring subproblems are solved in valid topological order.
+\item \textbf{Solve the original problem}: Extract the final answer, either as a specific table entry or by combining subproblem solutions.
+\end{enumerate}
+
+For NP-complete problems with numeric parameters, DP frequently yields pseudo-polynomial algorithms. Such algorithms exhibit polynomial complexity in the numeric value of parameters rather than their binary representation length. When parameter magnitudes remain bounded, these solutions prove practically efficient despite theoretical intractability.
